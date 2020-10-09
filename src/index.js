@@ -1,42 +1,13 @@
-const express = require('express');
-const volleyBall = require('volleyball');
-const cors = require('cors');
-const { json } = require('express');
-require('dotenv').config();
+const Knn = require('./Algorithms/knn/KNN');
 
-const app = express();
+const dataset = {
+  X: [7, 7, 3, 1],
+  Y: [7, 4, 4, 4],
+  Value: ['Bad', 'Bad', 'Good', 'Good'],
+};
 
-const { palindrome  } = require('./utils/index')
+const Classifier = new Knn(dataset, 3);
 
-const { PORT } = process.env;
+Classifier.findDistance(3, 7).findNearest();
 
-app.use(volleyBall);
-app.use(cors());
-app.use(express.json());
-
-app.post('/', async (req, res, next) => {
-    try {
-        if( req.body !== null ) {
-            const { text, option } = req.body;
-            console.log(text, option);
-            switch (option) {
-                case 'palindrome':
-                    const check = palindrome(text);
-                    if (check) {
-                        res.status(200).json({
-                            data: check,
-                        });
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        }
-    } catch (error) {
-
-    }
-})
-
-
-app.listen(PORT, () => console.log(`Server started at : http://localhost:${PORT} 🎉`));
+console.log(`The Test with 3 & 7 results outcome = ${Classifier.result}`);
